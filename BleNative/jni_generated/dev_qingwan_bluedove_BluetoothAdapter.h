@@ -31,6 +31,94 @@ JNIEXPORT void JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1releaseAdap
 JNIEXPORT jstring JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1getDeviceId
   (JNIEnv *, jclass, jlong);
 
+/*
+ * Class:     dev_qingwan_bluedove_BluetoothAdapter
+ * Method:    n_isAdvertisementOffloadSupported
+ * Signature: (J)Z
+ */
+JNIEXPORT jboolean JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1isAdvertisementOffloadSupported
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     dev_qingwan_bluedove_BluetoothAdapter
+ * Method:    n_isCentralRoleSupported
+ * Signature: (J)Z
+ */
+JNIEXPORT jboolean JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1isCentralRoleSupported
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     dev_qingwan_bluedove_BluetoothAdapter
+ * Method:    n_isClassicSupported
+ * Signature: (J)Z
+ */
+JNIEXPORT jboolean JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1isClassicSupported
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     dev_qingwan_bluedove_BluetoothAdapter
+ * Method:    n_isExtendedAdvertisingSupported
+ * Signature: (J)Z
+ */
+JNIEXPORT jboolean JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1isExtendedAdvertisingSupported
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     dev_qingwan_bluedove_BluetoothAdapter
+ * Method:    n_isLowEnergyCodedPhySupported
+ * Signature: (J)Z
+ */
+JNIEXPORT jboolean JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1isLowEnergyCodedPhySupported
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     dev_qingwan_bluedove_BluetoothAdapter
+ * Method:    n_isLowEnergySupported
+ * Signature: (J)Z
+ */
+JNIEXPORT jboolean JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1isLowEnergySupported
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     dev_qingwan_bluedove_BluetoothAdapter
+ * Method:    n_isLowEnergyUncoded2MPhySupported
+ * Signature: (J)Z
+ */
+JNIEXPORT jboolean JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1isLowEnergyUncoded2MPhySupported
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     dev_qingwan_bluedove_BluetoothAdapter
+ * Method:    n_isPeripheralRoleSupported
+ * Signature: (J)Z
+ */
+JNIEXPORT jboolean JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1isPeripheralRoleSupported
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     dev_qingwan_bluedove_BluetoothAdapter
+ * Method:    n_getMaxAdvertisementDataLength
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1getMaxAdvertisementDataLength
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     dev_qingwan_bluedove_BluetoothAdapter
+ * Method:    n_getBluetoothAddress
+ * Signature: (J)J
+ */
+JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1getBluetoothAddress
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     dev_qingwan_bluedove_BluetoothAdapter
+ * Method:    n_getRadioAsync
+ * Signature: (J)J
+ */
+JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1getRadioAsync
+  (JNIEnv *, jclass, jlong);
+
 #ifdef __cplusplus
 }
 #endif

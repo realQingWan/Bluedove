@@ -17,6 +17,10 @@ dependencies {
 }
 
 
+tasks.withType<JavaCompile>().configureEach {
+    options.compilerArgs.addAll(listOf("-h", file("$projectDir/BleNative/jni_generated").absolutePath))
+}
+
 task("generateJniHeaders") {
     val javaHome = System.getProperty("java.home")
     val javacPath = "$javaHome/bin/javac"
