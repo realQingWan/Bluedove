@@ -1,4 +1,7 @@
+import java.nio.file.Files
+
 plugins {
+    java
     kotlin("jvm") version "2.0.0"
 }
 
@@ -11,6 +14,30 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+}
+
+
+task("generateJniHeaders") {
+    val javaHome = System.getProperty("java.home")
+    val javacPath = "$javaHome/bin/javac"
+    val nativeIncludeDir = file("$projectDir/BleNative/jni_generated")
+    val nativeClasses = listOf(
+        "dev.qingwan.bluedove.BluetoothAdapter",
+    )
+
+    doLast {
+        nativeClasses.forEach {
+            println("Generating $it")
+            val nativeSource = "$projectDir/src/main/java/${it.replace(".", "/")}.java"
+            val nativeClass = "$projectDir/src/main/java/${it.replace(".", "/")}.class"
+
+            exec {
+                commandLine(javacPath, "-h", nativeIncludeDir, nativeSource)
+            }
+            File(nativeClass).delete()
+        }
+    }
+
 }
 
 tasks.test {
