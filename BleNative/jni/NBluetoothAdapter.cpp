@@ -9,10 +9,6 @@
 using namespace winrt;
 using namespace Windows::Devices::Bluetooth;
 
-struct BluetoothAdapterWrapper
-{
-    BluetoothAdapter value;
-};
 
 JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1getDefaultAsync
         (JNIEnv *, jclass)

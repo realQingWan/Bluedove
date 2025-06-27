@@ -17,4 +17,6 @@ add_library(BleNative SHARED
         Util.cpp
         Util.h
         jni/NRadio.cpp
-        jni/Wrapper.h)
+        jni/Wrapper.h
+        jni/NBluetoothLEDevice.cpp
+        jni/advertisement/NBluetoothLEAdvertisementWatcher.cpp)

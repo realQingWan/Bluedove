@@ -1,5 +1,8 @@
 package dev.qingwan.bluedove;
 
+/**
+ * Implement of <a href="https://learn.microsoft.com/en-us/uwp/api/windows.devices.bluetooth.bluetoothadapter">BluetoothAdapter</a>
+ */
 public class BluetoothAdapter implements AutoCloseable {
     private final long n_Pointer;
     private BluetoothAdapter(long pointer) {

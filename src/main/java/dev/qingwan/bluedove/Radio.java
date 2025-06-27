@@ -2,7 +2,7 @@ package dev.qingwan.bluedove;
 
 public class Radio {
     private final long n_Pointer;
-    public Radio(long pointer) {
+    Radio(long pointer) {
         this.n_Pointer = pointer;
     }
 
