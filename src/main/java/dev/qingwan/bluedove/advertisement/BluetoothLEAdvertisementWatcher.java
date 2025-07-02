@@ -1,6 +1,7 @@
 package dev.qingwan.bluedove.advertisement;
 
 import dev.qingwan.bluedove.AutoManageWrapper;
+import dev.qingwan.bluedove.BaseListener;
 import dev.qingwan.bluedove.BluetoothSignalStrengthFilter;
 import dev.qingwan.bluedove.Native;
 
@@ -73,12 +74,12 @@ public class BluetoothLEAdvertisementWatcher extends AutoManageWrapper {
         return String.format("BluetoothLEAdvertisementWatcher(n_Pointer=%d)", n_Pointer);
     }
 
-    public abstract static class BluetoothLEAdvertisementReceivedListener{
-        public void callback(long argsPointer) {
+    public abstract static class BluetoothLEAdvertisementReceivedListener extends BaseListener {
+        public void callback(long objPointer, long argsPointer) {
+            System.out.printf("objPointer=%d, argsPointer=%d%n", objPointer, argsPointer);
             onReceived(new BluetoothLEAdvertisementReceivedEventArgs(argsPointer));
         }
         protected abstract void onReceived(BluetoothLEAdvertisementReceivedEventArgs args);
-
     }
     public static final class BluetoothLEAdvertisementReceivedEventArgs extends AutoManageWrapper{
 

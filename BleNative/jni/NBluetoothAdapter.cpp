@@ -101,6 +101,7 @@ JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1getRadioAs
   (JNIEnv *, jclass, jlong ptr)
 {
     auto* pAdapterWrapper = reinterpret_cast<Wrapper<BluetoothAdapter>*>(ptr);
-    auto pRadioWrapper = new Wrapper(pAdapterWrapper->value.GetRadioAsync().get());
-    return reinterpret_cast<jlong>(pRadioWrapper);
+    auto radioOperation = pAdapterWrapper->value.GetRadioAsync();
+    auto* pRadioOperationWrapper = new OperationWrapper(radioOperation);
+    return reinterpret_cast<jlong>(pRadioOperationWrapper);
 }

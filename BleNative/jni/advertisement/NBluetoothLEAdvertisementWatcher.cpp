@@ -9,41 +9,6 @@
 using namespace winrt;
 using namespace Windows::Devices::Bluetooth::Advertisement;
 
-class WrappedReceivedListener : JNIEnvWrapper
-{
-private:
-    jobject listener;
-public:
-    mutable event_token token;
-
-public:
-    WrappedReceivedListener(JNIEnv* env, jobject listener): JNIEnvWrapper(env)
-    {
-        std::cout << "create WrappedReceivedListener" << std::endl;
-        this->listener = env->NewGlobalRef(listener);
-    }
-
-    ~WrappedReceivedListener()
-    {
-        std::cout << "delete WrappedReceivedListener" << std::endl;
-        context([this](JNIEnv* env)
-        {
-            env->DeleteGlobalRef(listener);
-        });
-    }
-
-    void operator()(BluetoothLEAdvertisementWatcher const& watcher, BluetoothLEAdvertisementReceivedEventArgs const& args)
-    {
-        context([this,args](JNIEnv* env)
-        {
-            jclass clazz = env->FindClass("dev/qingwan/bluedove/advertisement/BluetoothLEAdvertisementWatcher$BluetoothLEAdvertisementReceivedListener");
-            jmethodID callback = env->GetMethodID(clazz, "callback", "(J)V");
-            auto pArgs = new Wrapper(args);
-            env->CallVoidMethod(listener, callback, reinterpret_cast<jlong>(pArgs));
-        });
-    }
-};
-
 JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher_n_1newWatcher
   (JNIEnv *, jclass)
 {
@@ -63,7 +28,8 @@ JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdver
   (JNIEnv *env, jclass, jlong ptr, jobject listener)
 {
     auto* pWatcherWrapper = reinterpret_cast<Wrapper<BluetoothLEAdvertisementWatcher>*>(ptr);
-    auto pWrappedListener = std::make_shared<WrappedReceivedListener>(env, listener);
+    auto pWrappedListener = std::make_shared<WrappedListener<BluetoothLEAdvertisementWatcher, BluetoothLEAdvertisementReceivedEventArgs>>(env
+        , listener, "dev/qingwan/bluedove/advertisement/BluetoothLEAdvertisementWatcher$BluetoothLEAdvertisementReceivedListener");
     auto token = pWatcherWrapper->value.Received([pWrappedListener](auto&&... args) { (*pWrappedListener)(args...); });
     auto* pToken = new Wrapper(token);
     return reinterpret_cast<jlong>(pToken);

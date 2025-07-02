@@ -3,6 +3,8 @@ package dev.qingwan.bluedove;
 import dev.qingwan.bluedove.genericAttributeProfile.GattDeviceServicesResult;
 import dev.qingwan.bluedove.winrt.AsyncOperation;
 
+import java.util.function.Consumer;
+
 /**
  * Implement of <a href="https://learn.microsoft.com/en-us/uwp/api/windows.devices.bluetooth.bluetoothledevice">BluetoothLEDevice</a>
  */
@@ -17,6 +19,7 @@ public class BluetoothLEDevice extends AutoManageWrapper {
     private static native String n_getName(long pointer);
     private static native String n_getDeviceId(long pointer);
     private static native long n_getGattServicesAsync(long pointer);
+    private static native long n_listenNameChanged(long pointer, NameChangedListener listener);
 
     public static AsyncOperation<BluetoothLEDevice> fromIdAsync(String deviceId) {
         long ptr = n_fromIdAsync(deviceId);
@@ -32,6 +35,26 @@ public class BluetoothLEDevice extends AutoManageWrapper {
             return null;
         }
         return new AsyncOperation<>(ptr, BluetoothLEDevice::new);
+    }
+
+    public long listenNameChanged(NameChangedListener listener) {
+        return n_listenNameChanged(n_Pointer, listener);
+    }
+
+    public long listenNameChanged(Consumer<BluetoothLEDevice> listener) {
+        return listenNameChanged(new NameChangedListener() {
+            @Override
+            protected void onNameChanged(BluetoothLEDevice device) {
+                listener.accept(device);
+            }
+        });
+    }
+
+    public abstract static class NameChangedListener extends BaseListener{
+        public void callback(long objPointer, long argsPointer) {
+            onNameChanged(new BluetoothLEDevice(objPointer));
+        }
+        protected abstract void onNameChanged(BluetoothLEDevice device);
     }
 
     public String getName() {

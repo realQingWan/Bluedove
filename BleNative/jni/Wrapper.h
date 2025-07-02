@@ -80,4 +80,40 @@ struct OperationWrapper : IOperationWrapper {
     }
 };
 
+template<typename T, typename J>
+class WrappedListener : JNIEnvWrapper
+{
+private:
+    jobject listener;
+    const char* className;
+
+public:
+    WrappedListener(JNIEnv* env, jobject listener, const char* className): JNIEnvWrapper(env), className(className)
+    {
+        std::cout << "create WrappedListener" << std::endl;
+        this->listener = env->NewGlobalRef(listener);
+    }
+
+    ~WrappedListener()
+    {
+        std::cout << "delete WrappedListener" << std::endl;
+        context([this](JNIEnv* env)
+        {
+            env->DeleteGlobalRef(listener);
+        });
+    }
+
+    void operator()(T const& obj, J const& args)
+    {
+        context([this,obj,args](JNIEnv* env)
+        {
+            jclass clazz = env->FindClass(className);
+            jmethodID callback = env->GetMethodID(clazz, "callback", "(JJ)V");
+            auto pObj = new Wrapper(obj);
+            auto pArgs = new Wrapper(args);
+            env->CallVoidMethod(listener, callback, reinterpret_cast<jlong>(pObj), reinterpret_cast<jlong>(pArgs));
+        });
+    }
+};
+
 #endif //WRAPPER_H

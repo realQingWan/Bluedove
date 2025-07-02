@@ -59,3 +59,14 @@ JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_BluetoothLEDevice_n_1getGattSe
   auto* pServicesOperation = new OperationWrapper(servicesOperation);
   return reinterpret_cast<jlong>(pServicesOperation);
 }
+
+JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_BluetoothLEDevice_n_1listenNameChanged
+  (JNIEnv *env, jclass, jlong ptr, jobject listener)
+{
+  auto* pDeviceWrapper = reinterpret_cast<Wrapper<BluetoothLEDevice>*>(ptr);
+  auto pWrappedListener = std::make_shared<WrappedListener<BluetoothLEDevice, IInspectable>>(env, listener, "dev/qingwan/bluedove/BluetoothLEDevice$NameChangedListener");
+  auto token = pDeviceWrapper->value.NameChanged([pWrappedListener](auto&&... args) { (*pWrappedListener)(args...); });
+  auto* pToken = new Wrapper(token);
+  return reinterpret_cast<jlong>(pToken);
+}
+

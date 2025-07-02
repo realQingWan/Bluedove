@@ -51,6 +51,9 @@ fun main(args: Array<String>) {
                 return@listenReceived
             }
             println("gattServicesSize: ${gattServices.services.size}")
+            device.listenNameChanged { device ->
+                println("nameChanged: ${device.name}")
+            }
             gattServices.services.forEach {
                 if (it.uuid == BluetoothUuidHelper.fromShortId(0x1800)) {
                     println("0x1800")

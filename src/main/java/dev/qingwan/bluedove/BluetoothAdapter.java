@@ -1,5 +1,7 @@
 package dev.qingwan.bluedove;
 
+import dev.qingwan.bluedove.winrt.AsyncOperation;
+
 /**
  * Implement of <a href="https://learn.microsoft.com/en-us/uwp/api/windows.devices.bluetooth.bluetoothadapter">BluetoothAdapter</a>
  */
@@ -73,8 +75,8 @@ public class BluetoothAdapter extends AutoManageWrapper {
         return n_getBluetoothAddress(n_Pointer);
     }
 
-    public Radio getRadioAsync() {
-        return new Radio(n_getRadioAsync(n_Pointer));
+    public AsyncOperation<Radio> getRadioAsync() {
+        return new AsyncOperation<>(n_getRadioAsync(n_Pointer), Radio::new);
     }
 
     public String toString() {

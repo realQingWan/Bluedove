@@ -47,6 +47,14 @@ JNIEXPORT jstring JNICALL Java_dev_qingwan_bluedove_BluetoothLEDevice_n_1getDevi
 JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_BluetoothLEDevice_n_1getGattServicesAsync
   (JNIEnv *, jclass, jlong);
 
+/*
+ * Class:     dev_qingwan_bluedove_BluetoothLEDevice
+ * Method:    n_listenNameChanged
+ * Signature: (JLdev/qingwan/bluedove/BluetoothLEDevice/NameChangedListener;)J
+ */
+JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_BluetoothLEDevice_n_1listenNameChanged
+  (JNIEnv *, jclass, jlong, jobject);
+
 #ifdef __cplusplus
 }
 #endif
