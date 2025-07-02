@@ -1,9 +1,9 @@
 package dev.qingwan.bluedove;
 
-public class Radio {
-    private final long n_Pointer;
+public class Radio extends AutoManageWrapper {
+
     Radio(long pointer) {
-        this.n_Pointer = pointer;
+        super(pointer);
     }
 
     public String toString() {

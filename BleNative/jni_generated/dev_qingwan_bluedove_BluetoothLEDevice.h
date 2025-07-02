@@ -17,10 +17,34 @@ JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_BluetoothLEDevice_n_1fromIdAsy
 
 /*
  * Class:     dev_qingwan_bluedove_BluetoothLEDevice
- * Method:    n_releaseDevice
- * Signature: (J)V
+ * Method:    n_fromBluetoothAddressAsync
+ * Signature: (J)J
  */
-JNIEXPORT void JNICALL Java_dev_qingwan_bluedove_BluetoothLEDevice_n_1releaseDevice
+JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_BluetoothLEDevice_n_1fromBluetoothAddressAsync
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     dev_qingwan_bluedove_BluetoothLEDevice
+ * Method:    n_getName
+ * Signature: (J)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_dev_qingwan_bluedove_BluetoothLEDevice_n_1getName
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     dev_qingwan_bluedove_BluetoothLEDevice
+ * Method:    n_getDeviceId
+ * Signature: (J)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_dev_qingwan_bluedove_BluetoothLEDevice_n_1getDeviceId
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     dev_qingwan_bluedove_BluetoothLEDevice
+ * Method:    n_getGattServicesAsync
+ * Signature: (J)J
+ */
+JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_BluetoothLEDevice_n_1getGattServicesAsync
   (JNIEnv *, jclass, jlong);
 
 #ifdef __cplusplus

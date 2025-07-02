@@ -18,12 +18,6 @@ JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1getDefault
     return reinterpret_cast<jlong>(pAdapter);
 }
 
-JNIEXPORT void JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1releaseAdapter
-  (JNIEnv *, jclass, jlong ptr)
-{
-    delete reinterpret_cast<Wrapper<BluetoothAdapter>*>(ptr);
-}
-
 JNIEXPORT jboolean JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1isAdvertisementOffloadSupported
   (JNIEnv *, jclass, jlong ptr)
 {
@@ -72,7 +66,6 @@ JNIEXPORT jstring JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1getDevic
     auto* pAdapterWrapper = reinterpret_cast<Wrapper<BluetoothAdapter>*>(ptr);
     std::string str = to_string(pAdapterWrapper->value.DeviceId());
     const char* deviceId = str.c_str();
-    std::cout << "deviceId: " << deviceId << std::endl;
     return env->NewStringUTF(deviceId);
 }
 
@@ -94,7 +87,6 @@ JNIEXPORT jint JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1getMaxAdver
   (JNIEnv *, jclass, jlong ptr)
 {
     auto* pAdapterWrapper = reinterpret_cast<Wrapper<BluetoothAdapter>*>(ptr);
-    std::cout << "MaxAdvertisementDataLength: " << pAdapterWrapper->value.MaxAdvertisementDataLength() << std::endl;
     return static_cast<int32_t>(pAdapterWrapper->value.MaxAdvertisementDataLength());
 }
 
@@ -102,7 +94,6 @@ JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1getBluetoo
   (JNIEnv *, jclass, jlong ptr)
 {
     auto* pAdapterWrapper = reinterpret_cast<Wrapper<BluetoothAdapter>*>(ptr);
-    std::cout << "BluetoothAddress: " << pAdapterWrapper->value.BluetoothAddress() << std::endl;
     return static_cast<int64_t>(pAdapterWrapper->value.BluetoothAddress());
 }
 

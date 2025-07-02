@@ -17,14 +17,6 @@ JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdver
 
 /*
  * Class:     dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher
- * Method:    n_releaseWatcher
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher_n_1releaseWatcher
-  (JNIEnv *, jclass, jlong);
-
-/*
- * Class:     dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher
  * Method:    n_getStatus
  * Signature: (J)I
  */
@@ -38,6 +30,54 @@ JNIEXPORT jint JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdvert
  */
 JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher_n_1listenReceived
   (JNIEnv *, jclass, jlong, jobject);
+
+/*
+ * Class:     dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher
+ * Method:    n_start
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher_n_1start
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher
+ * Method:    n_stop
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher_n_1stop
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher
+ * Method:    n_revokeReceivedListener
+ * Signature: (JJ)V
+ */
+JNIEXPORT void JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher_n_1revokeReceivedListener
+  (JNIEnv *, jclass, jlong, jlong);
+
+/*
+ * Class:     dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher
+ * Method:    n_setScanningMode
+ * Signature: (JI)V
+ */
+JNIEXPORT void JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher_n_1setScanningMode
+  (JNIEnv *, jclass, jlong, jint);
+
+/*
+ * Class:     dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher
+ * Method:    n_getScanningMode
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher_n_1getScanningMode
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher
+ * Method:    n_getSignalStrengthFilter
+ * Signature: (J)J
+ */
+JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher_n_1getSignalStrengthFilter
+  (JNIEnv *, jclass, jlong);
 
 #ifdef __cplusplus
 }

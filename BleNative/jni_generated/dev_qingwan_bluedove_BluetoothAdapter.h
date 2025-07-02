@@ -17,14 +17,6 @@ JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1getDefault
 
 /*
  * Class:     dev_qingwan_bluedove_BluetoothAdapter
- * Method:    n_releaseAdapter
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_dev_qingwan_bluedove_BluetoothAdapter_n_1releaseAdapter
-  (JNIEnv *, jclass, jlong);
-
-/*
- * Class:     dev_qingwan_bluedove_BluetoothAdapter
  * Method:    n_getDeviceId
  * Signature: (J)Ljava/lang/String;
  */

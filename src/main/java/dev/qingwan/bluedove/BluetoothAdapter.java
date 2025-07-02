@@ -3,13 +3,11 @@ package dev.qingwan.bluedove;
 /**
  * Implement of <a href="https://learn.microsoft.com/en-us/uwp/api/windows.devices.bluetooth.bluetoothadapter">BluetoothAdapter</a>
  */
-public class BluetoothAdapter implements AutoCloseable {
-    private final long n_Pointer;
+public class BluetoothAdapter extends AutoManageWrapper {
     private BluetoothAdapter(long pointer) {
-        this.n_Pointer = pointer;
+        super(pointer);
     }
     private static native long n_getDefaultAsync();
-    private static native void n_releaseAdapter(long pointer);
     private static native String n_getDeviceId(long pointer);
     private static native boolean n_isAdvertisementOffloadSupported(long pointer);
     private static native boolean n_isCentralRoleSupported(long pointer);
@@ -83,8 +81,4 @@ public class BluetoothAdapter implements AutoCloseable {
         return String.format("BluetoothAdapter(n_Pointer=%d)", n_Pointer);
     }
 
-    @Override
-    public void close() {
-        n_releaseAdapter(n_Pointer);
-    }
 }

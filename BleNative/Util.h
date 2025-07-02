@@ -5,5 +5,6 @@
 
 
 winrt::hstring JStringToHString(JNIEnv *, jstring);
+jstring HStringToJString(JNIEnv* env, winrt::hstring);
 
 #endif //BLENATIVE_UTIL_H

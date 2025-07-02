@@ -19,4 +19,16 @@ add_library(BleNative SHARED
         jni/NRadio.cpp
         jni/Wrapper.h
         jni/NBluetoothLEDevice.cpp
-        jni/advertisement/NBluetoothLEAdvertisementWatcher.cpp)
+        jni/advertisement/NBluetoothLEAdvertisementWatcher.cpp
+        jni/advertisement/NBluetoothLEAdvertisementReceivedEventArgs.cpp
+        jni/Native.cpp
+        jni/NBluetoothSignalStrengthFilter.cpp
+        jni/advertisement/NBluetoothLEAdvertisement.cpp
+        jni/genericAttributeProfile/NGattDeviceServicesResult.cpp
+        jni/genericAttributeProfile/NGattDeviceService.cpp
+        "jni/NBluetoothUuidHelper .cpp"
+        jni/winrt/NGUID.cpp
+        jni/genericAttributeProfile/NGattCharacteristicsResult.cpp
+        jni/genericAttributeProfile/NGattCharacteristic.cpp
+        jni/winrt/NAsyncOperation.cpp
+        jni/genericAttributeProfile/NGattReadResult.cpp)

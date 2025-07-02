@@ -9,31 +9,38 @@
 using namespace winrt;
 using namespace Windows::Devices::Bluetooth::Advertisement;
 
-class WrappedReceivedListener
+class WrappedReceivedListener : JNIEnvWrapper
 {
 private:
-    JavaVM* jvm;
-    jobject javaListener;
-    JNIEnv* getEnv() {
-        JNIEnv* env;
-        jvm->GetEnv(reinterpret_cast<void**>(&env), JNI_VERSION_1_6);
-        return env;
-    }
+    jobject listener;
 public:
-    WrappedReceivedListener(JavaVM* vm, jobject listener)
+    mutable event_token token;
+
+public:
+    WrappedReceivedListener(JNIEnv* env, jobject listener): JNIEnvWrapper(env)
     {
-        JNIEnv* env = getEnv();
-        javaListener = env->NewGlobalRef(listener);
+        std::cout << "create WrappedReceivedListener" << std::endl;
+        this->listener = env->NewGlobalRef(listener);
     }
-    ~WrappedReceivedListener() {
-        if (javaListener) {
-            JNIEnv* env = getEnv();
-            env->DeleteGlobalRef(javaListener);
-        }
+
+    ~WrappedReceivedListener()
+    {
+        std::cout << "delete WrappedReceivedListener" << std::endl;
+        context([this](JNIEnv* env)
+        {
+            env->DeleteGlobalRef(listener);
+        });
     }
+
     void operator()(BluetoothLEAdvertisementWatcher const& watcher, BluetoothLEAdvertisementReceivedEventArgs const& args)
     {
-        JNIEnv* env = getEnv();
+        context([this,args](JNIEnv* env)
+        {
+            jclass clazz = env->FindClass("dev/qingwan/bluedove/advertisement/BluetoothLEAdvertisementWatcher$BluetoothLEAdvertisementReceivedListener");
+            jmethodID callback = env->GetMethodID(clazz, "callback", "(J)V");
+            auto pArgs = new Wrapper(args);
+            env->CallVoidMethod(listener, callback, reinterpret_cast<jlong>(pArgs));
+        });
     }
 };
 
@@ -43,12 +50,6 @@ JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdver
     auto watcher = BluetoothLEAdvertisementWatcher();
     auto pWatcher = new Wrapper(watcher);
     return reinterpret_cast<jlong>(pWatcher);
-}
-
-JNIEXPORT void JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher_n_1releaseWatcher
-  (JNIEnv *, jclass, jlong ptr)
-{
-    delete reinterpret_cast<Wrapper<BluetoothLEAdvertisementWatcher>*>(ptr);
 }
 
 JNIEXPORT jint JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher_n_1getStatus
@@ -62,10 +63,54 @@ JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdver
   (JNIEnv *env, jclass, jlong ptr, jobject listener)
 {
     auto* pWatcherWrapper = reinterpret_cast<Wrapper<BluetoothLEAdvertisementWatcher>*>(ptr);
-    JavaVM* jvm;
-    env->GetJavaVM(&jvm);
-    auto wrappedListener = WrappedReceivedListener(jvm, env->NewGlobalRef(listener));
+    auto pWrappedListener = std::make_shared<WrappedReceivedListener>(env, listener);
+    auto token = pWatcherWrapper->value.Received([pWrappedListener](auto&&... args) { (*pWrappedListener)(args...); });
+    auto* pToken = new Wrapper(token);
+    return reinterpret_cast<jlong>(pToken);
+}
 
-    auto token = pWatcherWrapper->value.Received(wrappedListener);
-    return static_cast<jlong>(token.value);
+JNIEXPORT void JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher_n_1revokeReceivedListener
+  (JNIEnv *, jclass, jlong ptr_watcher, jlong ptr_token)
+{
+    auto* pWatcherWrapper = reinterpret_cast<Wrapper<BluetoothLEAdvertisementWatcher>*>(ptr_watcher);
+    auto* pTokenWrapper = reinterpret_cast<Wrapper<event_token>*>(ptr_token);
+    pWatcherWrapper->value.Received(pTokenWrapper->value);
+    delete pTokenWrapper;
+}
+
+JNIEXPORT void JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher_n_1start
+  (JNIEnv *, jclass, jlong ptr)
+{
+    auto* pWatcherWrapper = reinterpret_cast<Wrapper<BluetoothLEAdvertisementWatcher>*>(ptr);
+    pWatcherWrapper->value.Start();
+}
+
+JNIEXPORT void JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher_n_1stop
+  (JNIEnv *, jclass, jlong ptr)
+{
+    auto* pWatcherWrapper = reinterpret_cast<Wrapper<BluetoothLEAdvertisementWatcher>*>(ptr);
+    pWatcherWrapper->value.Stop();
+}
+
+JNIEXPORT void JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher_n_1setScanningMode
+  (JNIEnv *, jclass, jlong ptr, jint mode)
+{
+    auto* pWatcherWrapper = reinterpret_cast<Wrapper<BluetoothLEAdvertisementWatcher>*>(ptr);
+    pWatcherWrapper->value.ScanningMode(static_cast<BluetoothLEScanningMode>(mode));
+}
+
+JNIEXPORT jint JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher_n_1getScanningMode
+  (JNIEnv *, jclass, jlong ptr)
+{
+    auto* pWatcherWrapper = reinterpret_cast<Wrapper<BluetoothLEAdvertisementWatcher>*>(ptr);
+    return static_cast<jint>(pWatcherWrapper->value.ScanningMode());
+}
+
+JNIEXPORT jlong JNICALL Java_dev_qingwan_bluedove_advertisement_BluetoothLEAdvertisementWatcher_n_1getSignalStrengthFilter
+  (JNIEnv *, jclass, jlong ptr)
+{
+    auto* pWatcherWrapper = reinterpret_cast<Wrapper<BluetoothLEAdvertisementWatcher>*>(ptr);
+    auto signalStrengthFilter = pWatcherWrapper->value.SignalStrengthFilter();
+    auto* pFilterWrapper = new Wrapper(signalStrengthFilter);
+    return reinterpret_cast<jlong>(pFilterWrapper);
 }
