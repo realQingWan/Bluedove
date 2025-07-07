@@ -26,7 +26,7 @@ add_library(BleNative SHARED
         jni/advertisement/NBluetoothLEAdvertisement.cpp
         jni/genericAttributeProfile/NGattDeviceServicesResult.cpp
         jni/genericAttributeProfile/NGattDeviceService.cpp
-        "jni/NBluetoothUuidHelper .cpp"
+        jni/NBluetoothUuidHelper.cpp
         jni/winrt/NGUID.cpp
         jni/genericAttributeProfile/NGattCharacteristicsResult.cpp
         jni/genericAttributeProfile/NGattCharacteristic.cpp
